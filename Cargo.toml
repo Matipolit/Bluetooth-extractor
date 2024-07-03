@@ -1,0 +1,10 @@
+[package]
+name = "bluetooth-tool"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tokio = {version = "1.38", features = ["full"]}
+pty-process = {version = "0.4", features = ["async"] }
+bytes = {version = "1.6"}
+is_superuser = "1.0"
