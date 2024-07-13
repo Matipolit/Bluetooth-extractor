@@ -1,4 +1,4 @@
-use tokio::fs::File;
+use tokio::fs::{File, OpenOptions};
 
 use bytes::BytesMut;
 use pty_process::{Command, Pty};
@@ -407,7 +407,7 @@ async fn main() -> io::Result<()> {
                     format!("{}/{}/info", &adapter_path, convert_mac_address(&address));
                 if std::fs::metadata(&device_path).is_ok() {
                     println!("Saving new data in file: {}", &device_path);
-                    let file = File::open(device_path).await?;
+                    let file = File::open(&device_path).await?;
                     let reader = BufReader::new(file);
                     let mut contents = String::new();
 
@@ -485,6 +485,14 @@ async fn main() -> io::Result<()> {
                         contents.push_str(&line);
                         contents.push('\n');
                     }
+
+                    println!("New file contents: {}", contents);
+                    let mut file = OpenOptions::new()
+                        .write(true)
+                        .truncate(true)
+                        .open(&device_path)
+                        .await?;
+                    file.write_all(contents.as_bytes()).await?;
                 } else {
                     println!("Device with addr. {} not found in the linux filesystem. Perhaps it was never connected on linux?", &address);
                 }
