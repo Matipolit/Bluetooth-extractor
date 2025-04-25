@@ -8,3 +8,5 @@ tokio = {version = "1.38", features = ["full"]}
 pty-process = {version = "0.4", features = ["async"] }
 bytes = {version = "1.6"}
 is_superuser = "1.0"
+thiserror = "1.0"
+libc = "0.2.172"
